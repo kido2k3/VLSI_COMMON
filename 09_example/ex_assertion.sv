@@ -2,7 +2,7 @@
 //-- File Version    : 
 //-- Date            : 
 //-- Author          : kido
-//-- All assertions are common in design verification, and its explaination
+//-- examples of assertions are common in design verification
 //===========================================================================
 
 // Checker: a is connecting to b
