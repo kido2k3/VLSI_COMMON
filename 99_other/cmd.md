@@ -5,7 +5,7 @@
 For file export, text capture
 
 1. Delete lines having `error`
-    ```sh
+    ```bash
     sed '/error/d' in.txt > out.txt
     ```
 2. Replace `error` with `warning`
@@ -77,10 +77,28 @@ For table, csv, directory
 
 # seed generation
 * bash:
-```
+```bash
 seed=$(( $(od -An -N4 -tu4 /dev/urandom) & 0x7FFFFFFF ))
 ```
 * csh:
-```
+```cs
 set seed = `od -An -N3 -tu4 /dev/urandom`
 ```
+
+# instead of >, use tee
+```bash
+#echo "a" > file.txt
+echo "a" | tee file.txt
+#echo "a" >> file.txt
+echo "a" | tee -a file.txt
+```
+# instead of rm, use find -delete
+```bash
+find ./ -type f ! -name "*base*" ! -name "*.xlsm" ! -name "*param_default*"  -delete
+```
+**Above code:**
+* f: file
+* d: directory
+* l: link
+# other notes
+## dos2unix if bash script can't read csv file

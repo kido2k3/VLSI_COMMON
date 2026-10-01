@@ -1,0 +1,15 @@
+#***********************************************************
+#       Prompt command line more colorful
+#***********************************************************
+set prompt="%{\033[1;37m%}[%T] %{\033[1;32m%}%n@%m: %{\033[5;36m%}%/\n%{\033[0m%}%# "
+
+#***********************************************************
+#       Aliases
+#***********************************************************
+alias   v       vim
+alias   ll      "ls -la --sort=extension"
+alias   vip     "$DESIGNWARE_HOME/bin/dw_vip_setup -path ~/design_dir -methodology UVM -simulator vcs -svlog"
+alias   cls     "clear"
+alias   tree    "tree --charset=ascii"
+alias   src     "source ~/.cshrc"
+alias   rp      "realpath"
