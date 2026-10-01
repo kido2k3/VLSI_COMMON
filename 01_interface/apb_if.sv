@@ -53,24 +53,5 @@ interface apb_if#(
   sva_stable: assert property (stable_p) else `uvm_error("SVA", "Failed in stable");
   sva_known: assert property (known_p) else `uvm_error("SVA", "Failed in known");
   sva_handshake: assert property (handshake_p) else `uvm_error("SVA", "Failed in handshake");
-  // NOTE FOR ASSERTION
-  // overlapped implication: |-> (on the same clk)
-  // non-overlapped implication: |=> (on the next clk)
-  // $rose, $fell, $stable
-  // $past(a, 2): return a value in the past  2 cycles
-  // $onehot(a): a is one hot or not
-  // $onehot0(a): a is one hot (having 0 value) or not
-  // $isunknown(a): a has x, z or not
-
-  // clock delay:
-  // ##n: n cycle delay
-  // ##0: no delay
-  // ##[min:max]: within the min-max cycles, rhs must be true
-  // ##[min:$]: infinite number cycles, rhs should be true
-  // repeatition operator:
-  // [*n]: lhs must be repeated n times
-  // [*min:max]: lhs can be repeated min-max times
-  // eg. a ##2 b [*3]  ->  a ##2 b ##1 b ##1 b ##1 b
-  // non-consecutive repeatition operator (view later)
-  //
+  
 endinterface
