@@ -1,7 +1,5 @@
 //===========================================================================
-//-- File Version    : 1.00
-//-- Date            : 25/11/25
-//-- Author          : phong
+//-- Author          : kido
 //-- IP Name         : asc_fifo (Asynchronous FIFO)
 //-- History         : ver.1.00 (25/11/24) 1st release
 //--
