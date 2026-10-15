@@ -1,0 +1,20 @@
+#***********************************************************
+#       Prompt command line more colorful
+#***********************************************************
+PS1='\[\033[1;37m\][\t] \[\033[1;32m\]\u@\h: \[\033[1;36m\]\w\n\[\033[0m\]\$ '
+
+#***********************************************************
+#       Color of ls
+#***********************************************************
+export LS_COLORS='di=01;36'
+
+#***********************************************************
+#       Aliases
+#***********************************************************
+alias v='vim'
+alias ll='ls -la --sort=extension'
+alias vip='$DESIGNWARE_HOME/bin/dw_vip_setup -path ~/design_dir -methodology UVM -simulator vcs -svlog'
+alias cls='clear'
+alias tree='tree --charset=ascii'
+alias src='source ~/.bashrc'
+alias rp='realpath'
