@@ -7,9 +7,9 @@
 class apb_mst_agt extends uvm_agent;
 	`uvm_component_utils(apb_mst_agt)
 
-	apb_mst_drv apb_mst_drv;
-	apb_mst_seqr apb_mst_seqr;
-	apb_mst_mon apb_mst_mon;
+	apb_mst_drv drv;
+	apb_mst_seqr seqr;
+	apb_mst_mon mon;
 
 	function new(string name, uvm_component parent);
 		super.new(name, parent);
@@ -19,15 +19,15 @@ class apb_mst_agt extends uvm_agent;
 		`uvm_info("build_phase", "Entered...", UVM_LOW)
 		super.build_phase(phase);
 
-		apb_mst_drv  = apb_mst_drv::type_id::create("apb_mst_drv", this);
-		apb_mst_seqr = apb_mst_seqr::type_id::create("apb_mst_seqr", this);
-		apb_mst_mon  = apb_mst_mon::type_id::create("apb_mst_mon", this);
+		drv  = apb_mst_drv::type_id::create("drv", this);
+		seqr = apb_mst_seqr::type_id::create("seqr", this);
+		mon  = apb_mst_mon::type_id::create("mon", this);
 		`uvm_info("build_phase", "Exit...", UVM_LOW)
 	endfunction
 
 	function void connect_phase(uvm_phase phase);
 		`uvm_info("connect_phase", "Entered...", UVM_LOW)
-		apb_mst_drv.seq_item_port.connect(apb_mst_seqr.seq_item_export);
+		drv.seq_item_port.connect(seqr.seq_item_export);
 		`uvm_info("connect_phase", "Exit...", UVM_LOW)
 	endfunction
 
