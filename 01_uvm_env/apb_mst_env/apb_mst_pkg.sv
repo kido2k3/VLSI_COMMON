@@ -18,6 +18,5 @@ package apb_mst_pkg;
 	`include "apb_mst_mon.sv"
 	`include "apb_mst_seqr.sv"
 	`include "apb_mst_agt.sv"
-	`include "apb_mst_base_seq.sv"
 
 endpackage

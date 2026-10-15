@@ -13,3 +13,6 @@ For changing width of addr, data, in `apb_mst_pkg.sv` file:
 ```
 ## ex_test
 Example test can be referred
+
+## ex_seq
+Example sequences can be referred
