@@ -74,9 +74,9 @@ interface apb_mst_if#(
 		($rose(penable) |-> penable throughout ##[0:$] pready);
 	endproperty
 	
-	sva_penable: assert property (p_penable) else `uvm_error("SVA", $sformatf("%t: Failed in penable", $time));
-	sva_stable: assert property (p_stable) else `uvm_error("SVA", $sformatf("%t: Failed in stable", $time));
-	sva_known: assert property (p_known) else `uvm_error("SVA", $sformatf("%t: Failed in known", $time));
-	sva_handshake: assert property (p_handshake) else `uvm_error("SVA", $sformatf("%t: Failed in handshake", $time));
+	sva_penable: assert property (p_penable) else `uvm_error("SVA", $sformatf("%t: Failed in penable", $time))
+	sva_stable: assert property (p_stable) else `uvm_error("SVA", $sformatf("%t: Failed in stable", $time))
+	sva_known: assert property (p_known) else `uvm_error("SVA", $sformatf("%t: Failed in known", $time))
+	sva_handshake: assert property (p_handshake) else `uvm_error("SVA", $sformatf("%t: Failed in handshake", $time))
 	
 endinterface
