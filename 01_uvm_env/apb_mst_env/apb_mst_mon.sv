@@ -62,7 +62,7 @@ class apb_mst_mon extends uvm_monitor;
 			end
 			item.slverr = vif.mon_if.pslverr;
 			item.status = UVM_TLM_OK_RESPONSE;
-			`uvm_info("apb mst mon", $sformatf("%s", item.sprint), UVM_LOW)
+			`uvm_info("apb mst mon", $sformatf("%s", item.sprint), UVM_MEDIUM)
 			as_port.write(item);
 			item = null;
 		end

@@ -70,7 +70,7 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 		ref _apb_item item
 	);
 		bit ready = 0;
-		`uvm_info("apb mst drv", $sformatf("drv_state = %s", state.name), UVM_LOW)
+		`uvm_info("apb mst drv", $sformatf("drv_state = %s", state.name), UVM_HIGH)
 		case(state)
 			IDLE: begin
 				vif.drv_if.psel <= 0;
@@ -91,7 +91,7 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 				vif.drv_if.psel <= 1;
 				vif.drv_if.penable <= 0;
 				vif.drv_if.paddr <= item.addr;
-				`uvm_info("drv debug", $sformatf("trans_type = %b", item.trans_type.num), UVM_LOW)
+				`uvm_info("drv debug", $sformatf("trans_type = %b", item.trans_type.num), UVM_DEBUG)
 				vif.drv_if.pwrite <= int'(item.trans_type);
 				vif.drv_if.pwdata <= item.data;
 				vif.drv_if.pstrb <= item.strb;
