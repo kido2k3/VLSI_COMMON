@@ -7,8 +7,8 @@
 `include "apb_mst_if.sv"
 package apb_mst_pkg;
 
-	`include "uvm_pkg.sv"
 	import uvm_pkg::*;
+
 
 	`include "apb_item.sv"
 	// typedef
