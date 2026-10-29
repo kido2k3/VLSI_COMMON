@@ -31,6 +31,8 @@ class apb_item #(
 
 	function new(string name = "apb_item");
 		super.new(name);
+        // default value
+        status = UVM_TLM_OK_RESPONSE;
 	endfunction
 
 endclass

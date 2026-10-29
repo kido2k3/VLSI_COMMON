@@ -82,7 +82,7 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 				if(seq_item_port.has_do_available)begin
 					seq_item_port.get(item);
 					//seq_item_port.get_next_item(item);
-					`uvm_info("apb mst drv", $sformatf("%s", item.sprint), UVM_LOW)
+					`uvm_info("apb mst drv", $sformatf("%s", item.sprint), UVM_MEDIUM)
 					state = SETUP;
 					phase.raise_objection(this);
 				end
