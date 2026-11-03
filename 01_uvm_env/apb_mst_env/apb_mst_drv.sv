@@ -102,7 +102,7 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 				vif.drv_if.psel <= 1;
 				vif.drv_if.penable <= 1;
 				// wait for ready assert
-				@(negedge vif.clk or negedge vif.rst_n);
+				@(vif.drv_if or negedge vif.rst_n);
 				if(!vif.rst_n) begin
 					// reset assert
 					`uvm_info("RST", "Found rst asserting during access", UVM_LOW)
