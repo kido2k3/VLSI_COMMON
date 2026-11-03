@@ -2,7 +2,7 @@
 //-- Author			: kido
 //-- Name			: apb_mst_drv (apb master driver)
 //-- History		: ver.1.00 (26/10/5) 1st release
-//--				:
+//--				: ver.1.01 (26/11/3) fix drv sample data
 //===========================================================================
 class apb_mst_drv extends uvm_driver #(_apb_item);
 	`uvm_component_utils(apb_mst_drv)
@@ -101,26 +101,13 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 			ACCESS: begin
 				vif.drv_if.psel <= 1;
 				vif.drv_if.penable <= 1;
-				// wait for ready assert
-				@(vif.drv_if or negedge vif.rst_n);
-				if(!vif.rst_n) begin
-					// reset assert
-					`uvm_info("RST", "Found rst asserting during access", UVM_LOW)
-					vif.mst_if_rst();
-					state = IDLE;
-					if(item != null) begin
-						item.status = UVM_TLM_INCOMPLETE_RESPONSE;
-						seq_item_port.put(item);
-					end
-					while (seq_item_port.has_do_available) begin
-						seq_item_port.get(item);
-					end
-				end else if (vif.pready) begin
+				// check ready
+				if (vif.drv_if.pready) begin
 					// ready assert
 					item.status = UVM_TLM_OK_RESPONSE;
-					item.slverr = vif.pslverr;
+					item.slverr = vif.drv_if.pslverr;
 					if(item.trans_type == _apb_item::READ) begin
-						item.data = vif.prdata;
+						item.data = vif.drv_if.prdata;
 					end
 					seq_item_port.put(item);
 					//seq_item_port.item_done();
