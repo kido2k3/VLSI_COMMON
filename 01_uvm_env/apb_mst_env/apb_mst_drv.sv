@@ -8,6 +8,8 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 	`uvm_component_utils(apb_mst_drv)
 	typedef enum {IDLE, SETUP, ACCESS} state_e;
 
+    state_e state = IDLE;
+	_apb_item item;
 	virtual apb_mst_if vif;
 	function new (string name, uvm_component parent);
 		super.new (name, parent);
@@ -26,9 +28,6 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 
 	//run phase: support asynchronous rst during apb transaction
 	virtual task run_phase (uvm_phase phase);
-		_apb_item item;
-		state_e state = IDLE;
-
 		forever begin
 			// interface is reset
 			wait(!vif.rst_n);
@@ -42,8 +41,8 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 					// notify to sequence, 
 					// clear fifo in sequencer
 					`uvm_info("RST", "Found rst asserting", UVM_LOW)
+                    set_state(IDLE);
 					vif.mst_if_rst();
-					state = IDLE;
 					if(item != null) begin
 						item.status = UVM_TLM_INCOMPLETE_RESPONSE;
 						seq_item_port.put(item);
@@ -57,25 +56,40 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 					end
 					break;
 				end else begin
-					drive_item(phase, state, item);
+					drive_item(phase);
 				end
 			end
 		end
 	endtask
+    
+    // task: set a state with corresponding interface
+    task set_state(state_e st);
+        case(st)
+            IDLE: begin
+                vif.drv_if.psel <= 0;
+                vif.drv_if.penable <= 0;
+            end
+            SETUP: begin
+                vif.drv_if.psel <= 1;
+                vif.drv_if.penable <= 0;
+				vif.drv_if.paddr <= item.addr;
+				vif.drv_if.pwrite <= int'(item.trans_type);
+				vif.drv_if.pwdata <= item.data;
+				vif.drv_if.pstrb <= item.strb;
+            end
+            ACCESS: begin
+                vif.drv_if.psel <= 1;
+                vif.drv_if.penable <= 1;
+            end
+        endcase
+        state = st;
+		`uvm_info("apb mst drv", $sformatf("drv_state = %s", state.name), UVM_DEBUG)
+    endtask
 
 	// drive item: drive interface via received item
-	virtual task drive_item (
-		ref uvm_phase phase, 
-		ref state_e state, 
-		ref _apb_item item
-	);
-		bit ready = 0;
-		`uvm_info("apb mst drv", $sformatf("drv_state = %s", state.name), UVM_DEBUG)
+	virtual task drive_item (ref uvm_phase phase);
 		case(state)
 			IDLE: begin
-				vif.drv_if.psel <= 0;
-				vif.drv_if.penable <= 0;
-				
 				if(phase.get_objection_count(this) > 0) begin
 						phase.drop_objection(this);
 				end
@@ -83,24 +97,14 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 					seq_item_port.get(item);
 					//seq_item_port.get_next_item(item);
 					`uvm_info("apb mst drv", $sformatf("%s", item.sprint), UVM_MEDIUM)
-					state = SETUP;
+                    set_state(SETUP);
 					phase.raise_objection(this);
 				end
 			end
 			SETUP: begin
-				vif.drv_if.psel <= 1;
-				vif.drv_if.penable <= 0;
-				vif.drv_if.paddr <= item.addr;
-				`uvm_info("drv debug", $sformatf("trans_type = %b", item.trans_type.num), UVM_DEBUG)
-				vif.drv_if.pwrite <= int'(item.trans_type);
-				vif.drv_if.pwdata <= item.data;
-				vif.drv_if.pstrb <= item.strb;
-				
-				state = ACCESS;
+                set_state(ACCESS);
 			end
 			ACCESS: begin
-				vif.drv_if.psel <= 1;
-				vif.drv_if.penable <= 1;
 				// check ready
 				if (vif.drv_if.pready) begin
 					// ready assert
@@ -110,14 +114,12 @@ class apb_mst_drv extends uvm_driver #(_apb_item);
 						item.data = vif.drv_if.prdata;
 					end
 					seq_item_port.put(item);
-					//seq_item_port.item_done();
 					item = null;
 					if(seq_item_port.has_do_available)begin
 						seq_item_port.get(item);
-					//seq_item_port.get_next_item(item);
-						state = SETUP;
+                        set_state(SETUP);
 					end else begin
-						state = IDLE;
+                        set_state(IDLE);
 					end
 				end
 			end
